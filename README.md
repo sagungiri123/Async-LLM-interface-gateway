@@ -89,8 +89,8 @@ This is a portfolio project built for learning. If you spot a bug or have a sugg
 MIT License – free to use for your own portfolio or job applications.
 
 👨‍💻 Author
-Your Name
-GitHub | LinkedIn
+Sagun Giri
+Sagungiri123 | LinkedIn
 
 Built with ❤️ to master FastAPI, asynchronous architectures, and AI deployment.
 

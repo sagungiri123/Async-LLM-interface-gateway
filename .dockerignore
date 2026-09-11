@@ -1,0 +1,29 @@
+# Python
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Environment
+.env
+!.env.example
+
+# Models (HuggingFace / Torch)
+*.safetensors
+*.bin
+*.pt
+*.pth
+models/
+huggingface_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store

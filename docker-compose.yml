@@ -1,0 +1,53 @@
+services:
+  # --- Service 1: Redis (The Queue) ---
+  redis:
+    image: redis:alpine
+    container_name: llm_redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # --- Service 2: FastAPI (The Gateway) ---
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llm_api
+    ports:
+      - "8001:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./app:/app/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+  # --- Service 3: RQ Worker (The AI Processor) ---
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: llm_worker
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./app:/app/app
+      - ./worker.py:/app/worker.py
+      - huggingface_cache:/root/.cache/huggingface
+
+volumes:
+  redis_data:
+  huggingface_cache:

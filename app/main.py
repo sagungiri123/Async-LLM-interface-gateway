@@ -1,3 +1,4 @@
+from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi import FastAPI, HTTPException
 from rq import Queue
 from rq.job import Job
@@ -46,3 +47,5 @@ async def get_result(task_id: str):
         return TaskResponse(task_id=task_id, status="failed", error=str(job.exc_info))
     else:
         return TaskResponse(task_id=task_id, status="unknown")
+    
+Instrumentator().instrument(app).expose(app)

@@ -1,0 +1,35 @@
+services:
+  # 1. The Redis Queue
+  - type: redis
+    name: llm-redis
+    ipAllowList: [] # Allows internal connections
+    plan: free
+
+  # 2. The FastAPI Web Service
+  - type: web
+    name: llm-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: llm-redis
+          type: redis
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /health
+
+  # 3. The RQ Worker (Background Worker)
+  - type: worker
+    name: llm-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile.worker
+    plan: free
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: llm-redis
+          type: redis
+          property: connectionString

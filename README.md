@@ -1,3 +1,5 @@
+![CI](https://github.com/sagungiri123/Async-LLM-interface-gateway/actions/workflows/ci.yml/badge.svg)
+
 # 🚀 Async Inference Gateway
 
 **A production-ready FastAPI microservice that processes AI prompts in the background** — without freezing your web server.

@@ -1,1 +1,26 @@
 .env
+cat >> .gitignore << 'EOF'
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Test/temp files
+after.txt
+before.txt
+*.log
+
+# HuggingFace model cache
+huggingface_cache/
+*.safetensors
+*.bin
+*.pt
+*.pth
+EOF
